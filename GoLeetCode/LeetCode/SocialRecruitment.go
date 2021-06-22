@@ -1,5 +1,7 @@
 package leetcode
 
+import "sort"
+
 func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	if nil == l1 {
 		return l2
@@ -113,4 +115,43 @@ func TotalHammingDistance(nums []int) int {
 		ret += c * (len(nums) - c)
 	}
 	return ret
+}
+
+func reverse(a []byte) {
+	for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
+		a[i], a[j] = a[j], a[i]
+	}
+}
+
+func nextPermutation(nums []byte) bool {
+	n := len(nums)
+	i := n - 2
+	for i >= 0 && nums[i] >= nums[i+1] {
+		i--
+	}
+	if i < 0 {
+		return false
+	}
+	j := n - 1
+	for j >= 0 && nums[i] >= nums[j] {
+		j--
+	}
+	nums[i], nums[j] = nums[j], nums[i]
+	reverse(nums[i+1:])
+	return true
+}
+
+func Permutation(s string) (ans []string) {
+	if len(s) == 0 {
+		return []string{}
+	}
+	t := []byte(s)
+	sort.Slice(t, func(i, j int) bool { return t[i] < t[j] })
+	for {
+		ans = append(ans, string(t))
+		if !nextPermutation(t) {
+			break
+		}
+	}
+	return
 }
